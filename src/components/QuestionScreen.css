@@ -1,0 +1,74 @@
+.q-card {
+  margin: 10px;
+  padding: 30px;
+  border-radius: 20px;
+  background: white;
+  color: #222;
+}
+
+.q-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.timer {
+  color: red;
+  font-size: 14px;
+}
+
+.bar {
+  height: 8px;
+    background: conic-gradient( #e5e1f7 70%,#6c5ce7 0) !important;
+  border-radius: 10px;
+  margin: 14px 0 24px;
+}
+
+
+
+.q-card h2 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option {
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  color: #444;
+}
+
+.option:nth-child(3) {
+  border: 2px solid #6c5ce7;
+  background: #f1eefe;
+  font-weight: bold;
+}
+
+.q-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.prev {
+  background: none;
+  border: none;
+  color: #6c5ce7;
+  font-size: 16px;
+}
+
+.next {
+  padding: 12px 40px;
+  border: none;
+  border-radius: 12px;
+  background: #6c5ce7;
+  color: white;
+  font-size: 16px;
+}
+

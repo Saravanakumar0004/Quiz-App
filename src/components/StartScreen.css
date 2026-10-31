@@ -1,0 +1,61 @@
+h3 {
+  color: orange;
+  font-weight: normal;
+}
+
+.card {
+  margin: 10px;
+  padding: 40px;
+  border-radius: 20px;
+  background: white;
+}
+
+.card h2 {
+  color: #333;
+}
+
+.card p {
+  font-size: 15px;
+  color: gray;
+  padding-top: 10px;
+}
+
+.quiz-info {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px !important;
+}
+
+.quiz-info p {
+  background: #ece9fb;
+  color: #4b3fb5;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+ul {
+  margin-left: 20px ;
+  margin: 20px;
+}
+
+ul li {
+  color: #666;
+  padding: 6px;
+}
+
+
+.start-btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  text-align: center;
+  border-radius: 12px;
+  background: orange;
+  font-size: 16px;
+  color:black !important;
+  font-weight: bold;
+  padding-top: 18px !important;
+  cursor: pointer;
+}
+
