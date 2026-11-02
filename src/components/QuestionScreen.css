@@ -4,6 +4,9 @@
   border-radius: 20px;
   background: white;
   color: #222;
+  width: 450px;
+  max-width: 100%;
+  
 }
 
 .q-top {
@@ -18,12 +21,16 @@
 
 .bar {
   height: 8px;
-    background: conic-gradient( #e5e1f7 70%,#6c5ce7 0) !important;
+  background: #e5e1f7;
   border-radius: 10px;
   margin: 14px 0 24px;
 }
 
-
+.bar-fill {
+  height: 100%;
+  background: #6c5ce7;
+  border-radius: 10px;
+}
 
 .q-card h2 {
   font-size: 22px;
@@ -43,10 +50,14 @@
   color: #444;
 }
 
-.option:nth-child(3) {
-  border: 2px solid #6c5ce7;
-  background: #f1eefe;
-  font-weight: bold;
+.option.correct {
+  border: 2px solid green;
+  background: #e8f9ef;
+}
+
+.option.wrong {
+  border: 2px solid red;
+  background: #fdecea;
 }
 
 .q-buttons {
@@ -63,6 +74,11 @@
   font-size: 16px;
 }
 
+.prev.disabled {
+  opacity: 0.4;
+  cursor: not-allowed !important;
+}
+
 .next {
   padding: 12px 40px;
   border: none;
@@ -72,3 +88,8 @@
   font-size: 16px;
 }
 
+.option,
+.prev,
+.next {
+  cursor: pointer;
+}

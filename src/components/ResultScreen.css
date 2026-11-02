@@ -5,6 +5,8 @@
   background: white;
   color: #222;
   text-align: center;
+  width: 450px;
+  max-width: 100%;
 }
 
 .circle {
@@ -59,8 +61,8 @@
   color: red;
 }
 
-.black{
-  color:black;
+.black {
+  color: black;
 }
 
 .restart {
@@ -73,4 +75,3 @@
   font-weight: bold;
   cursor: pointer;
 }
-

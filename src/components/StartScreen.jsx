@@ -1,6 +1,6 @@
 import "./StartScreen.css";
 
-function StartScreen() {
+function StartScreen(props) {
   const rules = [
     "Each question has 4 options",
     "Only one answer is correct",
@@ -24,7 +24,7 @@ function StartScreen() {
         ))}
       </ul>
 
-      <p className="start-btn">Start Quiz</p>
+      <p className="start-btn"  onClick={props.onStart}>Start Quiz</p>
     </div>
   );
 }

@@ -1,6 +1,14 @@
 import "./QuestionScreen.css";
 
 function QuestionScreen(props) {
+  const percent = (props.current / props.total) * 100;
+
+  function getClass(option) {
+    if (!props.selected) return "option";
+    if (option === props.correct) return "option correct";
+    if (option === props.selected) return "option wrong";
+    return "option";
+  }
 
   return (
     <div className="q-card">
@@ -12,21 +20,33 @@ function QuestionScreen(props) {
       </div>
 
       <div className="bar">
+        <div className="bar-fill" style={{ width: percent + "%" }}></div>
       </div>
 
       <h2>{props.question}</h2>
 
       <div className="options">
-        {props.options.map((value, index) => (
-          <div key={index} className="option">
-            {value}
+        {props.options.map((option) => (
+          <div
+            key={option.id}
+            className={getClass(option)}
+            onClick={() => props.onSelect(option)}
+          >
+            {option}
           </div>
         ))}
       </div>
 
       <div className="q-buttons">
-        <p className="prev">Previous</p>
-        <p className="next">Next</p>
+        <p
+          className={props.current === 1 ? "prev disabled" : "prev"}
+          onClick={props.onPrev}
+        >
+          Previous
+        </p>
+        <p className="next" onClick={props.onNext}>
+          {props.current === props.total ? "Finish" : "Next"}
+        </p>
       </div>
     </div>
   );

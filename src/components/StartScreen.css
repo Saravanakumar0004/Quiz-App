@@ -8,6 +8,8 @@ h3 {
   padding: 40px;
   border-radius: 20px;
   background: white;
+  width: 450px;
+  max-width: 100%;
 }
 
 .card h2 {
@@ -35,7 +37,7 @@ h3 {
 }
 
 ul {
-  margin-left: 20px ;
+  margin-left: 20px;
   margin: 20px;
 }
 
@@ -43,7 +45,6 @@ ul li {
   color: #666;
   padding: 6px;
 }
-
 
 .start-btn {
   width: 100%;
@@ -53,9 +54,8 @@ ul li {
   border-radius: 12px;
   background: orange;
   font-size: 16px;
-  color:black !important;
+  color: black !important;
   font-weight: bold;
   padding-top: 18px !important;
   cursor: pointer;
 }
-

@@ -5,14 +5,17 @@
 }
 
 .screens {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
   margin-top: 20px;
+  min-height: 70vh;
 }
+
 
 @media (max-width: 768px) {
   .screens {
-    grid-template-columns: 1fr;
+    width: 100%;
+    padding: 0 10px;
   }
 }
