@@ -1,6 +1,6 @@
 import "./Header.css";
 
-function Header(props) {
+function Header() {
   return (
     <div className="header">
       <h1>React Quiz</h1>

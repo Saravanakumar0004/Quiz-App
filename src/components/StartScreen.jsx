@@ -12,7 +12,6 @@ function StartScreen(props) {
     <div className="card">
       <h2>React Basics Quiz</h2>
       <p>Test what you know about React.</p>
-
       <div className="quiz-info">
         <p className="bb">10 questions</p>
         <p className="b2">10 minutes</p>
@@ -20,7 +19,7 @@ function StartScreen(props) {
 
       <ul>
         {rules.map((value, index) => (
-          <li key={index}>{value}</li>
+          <li key={index.id}>{value}</li>
         ))}
       </ul>
 
