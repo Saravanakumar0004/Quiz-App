@@ -59,3 +59,12 @@ ul li {
   padding-top: 18px !important;
   cursor: pointer;
 }
+
+.category {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+}

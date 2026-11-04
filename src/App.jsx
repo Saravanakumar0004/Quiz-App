@@ -1,42 +1,32 @@
 
 import { useState, useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 
 import Header from "./components/Header";
-import StartScreen from "./components/StartScreen";
-import QuestionScreen from "./components/QuestionScreen";
-import ResultScreen from "./components/ResultScreen";
+import Home from "./pages/Home";
+import Quiz from "./pages/Quiz";
+import Result from "./pages/Result";
+import History from "./pages/History";
+import NotFound from "./pages/NotFound";
 
 import { getQuestions } from "./api";
 
 function App() {
-
+  const navigate = useNavigate();
 
   const [screen, setScreen] = useState("start");
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState({});
   const [seconds, setSeconds] = useState(0);
 
+
+  const [history, setHistory] = useState([]);
+
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-
-
-  // useEffect(() => {
-  //   async function loadQuestions() {
-  //     try {
-  //       const data = await getQuestions();
-  //       setQuestions(data);
-  //     } catch (err) {
-  //       setError(err.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-
-  //   loadQuestions();
-  // }, []);
 
   useEffect(() => {
     if (screen !== "quiz" || loading) return;
@@ -44,25 +34,25 @@ function App() {
     const timer = setInterval(() => {
       setSeconds((previous) => previous + 1);
     }, 1000);
+
     return () => clearInterval(timer);
   }, [screen, loading]);
 
-
-
+ 
   function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    return ( String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0")
+
+    return (
+      String(minutes).padStart(2, "0") +
+      ":" +
+      String(seconds).padStart(2, "0")
     );
   }
 
-
-
-  const question = questions[current];
-
-
-
+ 
   let score = 0;
+
   questions.forEach((q) => {
     if (answers[q.id] === q.answer) {
       score = score + 1;
@@ -70,39 +60,63 @@ function App() {
   });
 
 
-async function handleStart() {
-  setAnswers({});
-  setCurrent(0);
-  setSeconds(0);
-  setError("");
-  setLoading(true);
-  setScreen("quiz");
-  try {
-    const data = await getQuestions();
-    setQuestions(data);
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-}
+  async function handleStart() {
+    setAnswers({});
+    setCurrent(0);
+    setSeconds(0);
+    setQuestions([]);
+    setError("");
+    setLoading(true);
+    setScreen("quiz");
 
+    navigate("/quiz");
+
+    try {
+      const data = await getQuestions();
+      setQuestions(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
 
   function handleSelect(option) {
-    if (answers[question.id]) return;
+    const question = questions[current];
+
+    if (!question || answers[question.id]) return;
+
     setAnswers((previous) => ({
       ...previous,
-      [question.id]: option
+      [question.id]: option,
     }));
   }
 
 
   function handleNext() {
+    if (screen !== "quiz" || questions.length === 0) return;
+
     if (current < questions.length - 1) {
       setCurrent(current + 1);
-    } else {
+    }
+    
+    else {
+      const entry = {
+        id: Date.now(),
+        score: score,
+        total: questions.length,
+        percent: Math.round(
+          (score / questions.length) * 100
+        ),
+        date: new Date().toLocaleString(),
+        time: formatTime(seconds),
+      };
+
+      setHistory((previous) => [entry, ...previous]);
+
       setScreen("result");
+      navigate("/result");
     }
   }
 
@@ -114,88 +128,83 @@ async function handleStart() {
   }
 
 
-
   function handleRestart() {
     setAnswers({});
     setCurrent(0);
     setSeconds(0);
     setQuestions([]);
     setError("");
+    setLoading(false);
     setScreen("start");
+
+    navigate("/");
   }
-
-
 
   return (
     <div className="app">
       <Header />
+
       <div className="screens">
-        {screen === "start" && (
-          <StartScreen
-            onStart={handleStart}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Home onStart={handleStart} />
+            }
           />
-        )}
 
-        {screen === "quiz" && loading && (
-          <div className="card">
-            <h2>Loading...</h2>
-          </div>
-        )}
-
-        {screen === "quiz" && !loading && error && (
-          <div className="card">
-            <h2 className="error">{error}</h2>
-            <p className="start-btn" onClick={handleStart}>
-              Try Again
-            </p>
-          </div>
-        )}
-
-        {screen === "quiz" &&
-          !loading &&
-          !error &&
-          questions.length === 0 && (
-            <div className="card">
-              <h2>No questions found</h2>
-              <p className="start-btn" onClick={handleRestart}>
-                Back
-              </p>
-            </div>
-          )}
-
-
-        {screen === "quiz" &&
-          !loading &&
-          !error &&
-          questions.length > 0 && (
-            <QuestionScreen
-              current={current + 1}
-              total={questions.length}
-              time={formatTime(seconds)}
-              question={question.question}
-              options={question.options}
-              selected={answers[question.id]}
-              correct={question.answer}
-              onSelect={handleSelect}
-              onNext={handleNext}
-              onPrev={handlePrev}
-            />
-          )}
-
-
-
-        {screen === "result" && (
-          <ResultScreen
-            score={score}
-            total={questions.length}
-            time={formatTime(seconds)}
-            onRestart={handleRestart}
+          <Route
+            path="/quiz"
+            element={
+              screen === "quiz" ? (
+                <Quiz
+                  loading={loading}
+                  error={error}
+                  questions={questions}
+                  current={current}
+                  answers={answers}
+                  time={formatTime(seconds)}
+                  onSelect={handleSelect}
+                  onNext={handleNext}
+                  onPrev={handlePrev}
+                  onStart={handleStart}
+                  onRestart={handleRestart}
+                />
+              ) : (
+                <Home onStart={handleStart} />
+              )
+            }
           />
-        )}
+
+          <Route
+            path="/result"
+            element={
+              screen === "result" ? (
+                <Result
+                  score={score}
+                  total={questions.length}
+                  time={formatTime(seconds)}
+                  onRestart={handleRestart}
+                />
+              ) : (
+                <Home onStart={handleStart} />
+              )
+            }
+          />
+
+          <Route
+            path="/history"
+            element={<History history={history} />}
+          />
+
+          <Route
+            path="*"
+            element={<NotFound />}
+          />
+        </Routes>
       </div>
     </div>
   );
-
 }
 
 export default App;
