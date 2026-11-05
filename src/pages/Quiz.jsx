@@ -1,70 +1,49 @@
-
-import { Navigate } from "react-router-dom";
 import QuestionScreen from "../components/QuestionScreen";
+import { useQuiz } from "../context/QuizContext";
 
-function Quiz(props) {
+function Quiz() {
+  const { state, questions, loading, error, time, select, next, prev, start, restart } = useQuiz();
 
+  if (loading) {
+    return (
+      <div className="card">
+        <h2>Loading…</h2>
+      </div>
+    );
+  }
 
-  if (props.loading === false &&
-      props.questions.length === 0 &&
-      !props.error) {
+  if (error) {
+    return (
+      <div className="card">
+        <h2 className="error">{error}</h2>
+        <p className="start-btn" onClick={start}>Try Again</p>
+      </div>
+    );
+  }
+
+  if (questions.length === 0) {
     return (
       <div className="card">
         <h2>No questions found</h2>
-
-        <button
-          className="start-btn"
-          onClick={props.onRestart}
-        >
-          Back to Home
-        </button>
+        <p className="start-btn" onClick={restart}>Back</p>
       </div>
     );
   }
 
-
-  if (props.loading) {
-    return (
-      <div className="card">
-        <h2>Loading Questions...</h2>
-      </div>
-    );
-  }
-
-  if (props.error) {
-    return (
-      <div className="card">
-        <h2 className="error">{props.error}</h2>
-
-        <button
-          className="start-btn"
-          onClick={props.onStart}
-        >
-          Try Again
-        </button>
-      </div>
-    );
-  }
-
-
-  const question = props.questions[props.current];
-
-  if (!question) {
-    return <Navigate to="/" replace />;
-  }
+  const question = questions[state.current];
 
   return (
     <QuestionScreen
-      current={props.current + 1}
-      total={props.questions.length}
-      time={props.time}
+      current={state.current + 1}
+      total={questions.length}
+      time={time}
       question={question.question}
       options={question.options}
-      selected={props.answers[question.id]}
+      selected={state.answers[question.id]}
       correct={question.answer}
-      onSelect={props.onSelect}
-      onNext={props.onNext}
-      onPrev={props.onPrev}
+      onSelect={select}
+      onNext={next}
+      onPrev={prev}
     />
   );
 }

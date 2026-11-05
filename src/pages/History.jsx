@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { useQuiz } from "../context/QuizContext";
 
-function History(props) {
-  if (props.history.length === 0) {
+function History() {
+  const { history } = useQuiz();
+
+  if (history.length === 0) {
     return (
       <div className="card">
         <h2>History</h2>
@@ -15,7 +18,7 @@ function History(props) {
     <div className="card">
       <h2>History</h2>
 
-      {props.history.map((item) => (
+      {history.map((item) => (
         <div className="history-item" key={item.id}>
           <span>{item.score}/{item.total} ({item.percent}%)</span>
           <span>{item.date}</span>
