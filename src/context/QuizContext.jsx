@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getQuestions } from "../api";
+import { getCategoryName } from "../categories";
 import useTimer, { formatTime } from "../hooks/useTimer";
 import useLocalStorage from "../hooks/useLocalStorage";
 
@@ -13,7 +14,6 @@ const initialState = {
   answers: {},
   timeTaken: 0,
 };
-
 
 function quizReducer(state, action) {
   switch (action.type) {
@@ -47,10 +47,19 @@ export function QuizProvider({ children }) {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(quizReducer, initialState);
 
+
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-const [history, setHistory] = useLocalStorage("quizHistory", []);
+
+
+  const [history, setHistory] = useLocalStorage("quizHistory", []);
+  const [settings, setSettings] = useLocalStorage("quizSettings", {
+    name: "",
+    category: "",
+    difficulty: "",
+    amount: 10,
+  });
 
 
   let score = 0;
@@ -64,7 +73,6 @@ const [history, setHistory] = useLocalStorage("quizHistory", []);
   const running = state.screen === "quiz" && !loading && error === "";
   const { timeLeft, time } = useTimer(600, handleTimeUp, running);
 
-
   function handleTimeUp() {
     finishQuiz(600);
   }
@@ -73,6 +81,9 @@ const [history, setHistory] = useLocalStorage("quizHistory", []);
   function finishQuiz(timeTaken) {
     const entry = {
       id: Date.now(),
+      name: settings.name,
+      category: getCategoryName(settings.category),
+      difficulty: settings.difficulty,
       score: score,
       total: questions.length,
       percent: Math.round((score / questions.length) * 100),
@@ -80,12 +91,13 @@ const [history, setHistory] = useLocalStorage("quizHistory", []);
       time: formatTime(timeTaken),
     };
 
-    setHistory([entry, ...history]);
+    setHistory([entry, ...history]); 
     dispatch({ type: "FINISH", timeTaken: timeTaken });
     navigate("/result");
   }
 
-  async function handleStart() {
+
+  async function handleStart(newSettings) {
     setQuestions([]);
     setError("");
     setLoading(true);
@@ -93,7 +105,7 @@ const [history, setHistory] = useLocalStorage("quizHistory", []);
     navigate("/quiz");
 
     try {
-      const data = await getQuestions();
+      const data = await getQuestions(newSettings);
       setQuestions(data);
     } catch (err) {
       setError(err.message);
@@ -104,6 +116,8 @@ const [history, setHistory] = useLocalStorage("quizHistory", []);
 
   function handleSelect(option) {
     const question = questions[state.current];
+    if (!question || state.answers[question.id]) return;
+
     dispatch({ type: "ANSWER", id: question.id, option: option });
   }
 
@@ -136,6 +150,8 @@ const [history, setHistory] = useLocalStorage("quizHistory", []);
     loading,
     error,
     history,
+    settings,
+    saveSettings: setSettings,
     score,
     time,
     timeTaken: formatTime(state.timeTaken),

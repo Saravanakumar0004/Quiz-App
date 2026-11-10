@@ -1,16 +1,19 @@
 import { NavLink } from "react-router-dom";
-import "./Header.css";
+
+
+function linkClass({ isActive }) {
+  return isActive ? "font-bold text-orange-400" : "text-[#c9c6ee]";
+}
 
 function Header() {
   return (
-    <div className="header">
-      <h1>React Quiz</h1>
-      <p>Build all 3 screens as separate components. Show them one below the other for now. </p>
+    <div>
+      <h1 className="text-3xl font-bold md:text-4xl">React Quiz</h1>
+      <p className="text-sm text-[#c9c6ee]">Test your React knowledge.</p>
 
-      
-      <div className="nav">
-        <NavLink to="/" end>Home</NavLink>
-        <NavLink to="/history">History</NavLink>
+      <div className="mt-3 flex gap-5">
+        <NavLink to="/" end className={linkClass}>Home</NavLink>
+        <NavLink to="/history" className={linkClass}>History</NavLink>
       </div>
     </div>
   );

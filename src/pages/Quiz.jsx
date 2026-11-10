@@ -1,31 +1,34 @@
 import QuestionScreen from "../components/QuestionScreen";
 import { useQuiz } from "../context/QuizContext";
 
+const cardClass = "m-2.5 w-full max-w-md rounded-3xl bg-white p-8 text-gray-800";
+const buttonClass = "mt-4 cursor-pointer rounded-xl bg-[#fec83a] py-3 text-center font-bold text-black";
+
 function Quiz() {
-  const { state, questions, loading, error, time, select, next, prev, start, restart } = useQuiz();
+  const { state, questions, loading, error, time, settings, select, next, prev, start, restart } = useQuiz();
 
   if (loading) {
     return (
-      <div className="card">
-        <h2>Loading…</h2>
+      <div className={cardClass}>
+        <h2 className="text-2xl font-bold">Loading…</h2>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="card">
-        <h2 className="error">{error}</h2>
-        <p className="start-btn" onClick={start}>Try Again</p>
+      <div className={cardClass}>
+        <h2 className="text-xl font-bold text-red-500">{error}</h2>
+        <p className={buttonClass} onClick={() => start(settings)}>Try Again</p>
       </div>
     );
   }
 
   if (questions.length === 0) {
     return (
-      <div className="card">
-        <h2>No questions found</h2>
-        <p className="start-btn" onClick={restart}>Back</p>
+      <div className={cardClass}>
+        <h2 className="text-2xl font-bold">No questions found</h2>
+        <p className={buttonClass} onClick={restart}>Back</p>
       </div>
     );
   }

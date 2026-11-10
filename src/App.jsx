@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import "./App.css";
 
 import Header from "./components/Header";
 import Home from "./pages/Home";
@@ -14,26 +13,28 @@ function App() {
   const { state } = useQuiz();
 
   return (
-    <div className="app">
-      <Header />
+    <div className="min-h-screen bg-[#2d1b69] p-4 text-white md:p-8">
+      <div className="mx-auto max-w-5xl">
+        <Header />
 
-      <div className="screens">
-        <Routes>
-          <Route path="/" element={<Home />} />
+        <div className="mt-5">
+          <Routes>
+            <Route path="/" element={<Home />} />
 
-          <Route
-            path="/quiz"
-            element={state.screen === "quiz" ? <Quiz /> : <Home />}
-          />
+            <Route
+              path="/quiz"
+              element={state.screen === "quiz" ? <Quiz /> : <Home />}
+            />
 
-          <Route
-            path="/result"
-            element={state.screen === "result" ? <Result /> : <Home />}
-          />
+            <Route
+              path="/result"
+              element={state.screen === "result" ? <Result /> : <Home />}
+            />
 
-          <Route path="/history" element={<History />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+            <Route path="/history" element={<History />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </div>
     </div>
   );
