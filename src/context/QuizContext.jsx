@@ -166,6 +166,7 @@ export function QuizProvider({ children }) {
 }
 
 
-export function useQuiz() {
+
+export function useQuiz(){
   return useContext(QuizContext);
 }

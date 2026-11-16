@@ -6,7 +6,6 @@ import Quiz from "./pages/Quiz";
 import Result from "./pages/Result";
 import History from "./pages/History";
 import NotFound from "./pages/NotFound";
-
 import { useQuiz } from "./context/QuizContext";
 
 function App() {

@@ -32,6 +32,7 @@ function Quiz() {
       </div>
     );
   }
+  
 
   const question = questions[state.current];
 
