@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
-// T = the type of the saved value (string, number, an array...)
+
 function useLocalStorage<T>(
   key: string,
   startValue: T
@@ -18,7 +18,7 @@ function useLocalStorage<T>(
     return startValue;
   });
 
-  // save every time the value changes
+ 
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);

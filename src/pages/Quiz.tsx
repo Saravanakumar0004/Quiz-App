@@ -20,6 +20,7 @@ function Quiz() {
       <div className={cardClass}>
         <h2 className="text-xl font-bold text-red-500">{error}</h2>
         <p className={buttonClass} onClick={() => start(settings)}>Try Again</p>
+        <p className={buttonClass} onClick={restart}>Back</p>
       </div>
     );
   }
@@ -28,13 +29,25 @@ function Quiz() {
     return (
       <div className={cardClass}>
         <h2 className="text-2xl font-bold">No questions found</h2>
+        <p className="mt-2 text-gray-600">
+          There are not enough questions for this category, difficulty and
+          amount. Try a different difficulty or fewer questions.
+        </p>
         <p className={buttonClass} onClick={restart}>Back</p>
       </div>
     );
   }
-  
 
   const question = questions[state.current];
+
+  if (!question) {
+    return (
+      <div className={cardClass}>
+        <h2 className="text-2xl font-bold">Question not found</h2>
+        <p className={buttonClass} onClick={restart}>Back</p>
+      </div>
+    );
+  }
 
   return (
     <QuestionScreen

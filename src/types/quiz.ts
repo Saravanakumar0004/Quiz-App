@@ -1,6 +1,6 @@
 export type Screen = "start" | "quiz" | "result";
 
-// the settings from the Home form
+
 export interface QuizSettings {
   name: string;
   category: string;
@@ -8,7 +8,7 @@ export interface QuizSettings {
   amount: number;
 }
 
-// one question after we change the API data
+
 export interface Question {
   id: number;
   question: string;
@@ -16,7 +16,7 @@ export interface Question {
   answer: string;
 }
 
-// one finished quiz saved in history
+
 export interface HistoryItem {
   id: number;
   name: string;

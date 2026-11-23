@@ -7,17 +7,17 @@ import useTimer, { formatTime } from "../hooks/useTimer";
 import useLocalStorage from "../hooks/useLocalStorage";
 import type { HistoryItem, Question, QuizSettings, Screen } from "../types/quiz";
 
-const TOTAL_TIME = 600; // 10 minutes
+const TOTAL_TIME = 600; 
 
-// the reducer state
+
 interface QuizState {
   screen: Screen;
   current: number;
-  answers: Record<number, string>; // question id -> chosen option
+  answers: Record<number, string>;
   timeTaken: number;
 }
 
-// every action the reducer understands
+
 type QuizAction =
   | { type: "START" }
   | { type: "ANSWER"; id: number; option: string }
@@ -61,7 +61,7 @@ function quizReducer(state: QuizState, action: QuizAction): QuizState {
   }
 }
 
-// everything the pages can read from the context
+
 interface QuizContextType {
   state: QuizState;
   dispatch: Dispatch<QuizAction>;
@@ -87,12 +87,11 @@ export function QuizProvider({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const [state, dispatch] = useReducer(quizReducer, initialState);
 
-  // api states
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
-  // history and settings are remembered after refresh
+  
   const [history, setHistory] = useLocalStorage<HistoryItem[]>("quizHistory", []);
   const [settings, setSettings] = useLocalStorage<QuizSettings>("quizSettings", {
     name: "",
@@ -101,7 +100,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     amount: 10,
   });
 
-  // score is calculated here
+ 
   let score = 0;
   questions.forEach((q) => {
     if (state.answers[q.id] === q.answer) {
@@ -109,17 +108,20 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     }
   });
 
-  // timer runs only while the questions are showing
-  const running = state.screen === "quiz" && !loading && error === "";
+  
+  const running =
+    state.screen === "quiz" && !loading && error === "" && questions.length > 0;
   const { timeLeft, time } = useTimer(TOTAL_TIME, handleTimeUp, running);
 
-  // time is over: submit the quiz
+
   function handleTimeUp(): void {
     finishQuiz(TOTAL_TIME);
   }
 
-  // save to history and show the result page
+ 
   function finishQuiz(timeUsed: number): void {
+    if (state.screen !== "quiz" || questions.length === 0) return;
+
     const entry: HistoryItem = {
       id: Date.now(),
       name: settings.name,
@@ -132,12 +134,13 @@ export function QuizProvider({ children }: { children: ReactNode }) {
       time: formatTime(timeUsed),
     };
 
-    setHistory([entry, ...history]); // newest first
+    setHistory([entry, ...history]); 
     dispatch({ type: "FINISH", timeTaken: timeUsed });
     navigate("/result");
   }
 
   async function handleStart(newSettings: QuizSettings): Promise<void> {
+    setSettings(newSettings); 
     setQuestions([]);
     setError("");
     setLoading(true);
@@ -169,7 +172,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     if (state.current < questions.length - 1) {
       dispatch({ type: "NEXT" });
     } else {
-      finishQuiz(TOTAL_TIME - timeLeft); // last question: finish
+      finishQuiz(TOTAL_TIME - timeLeft); 
     }
   }
 
@@ -208,7 +211,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
   return <QuizContext.Provider value={value}>{children}</QuizContext.Provider>;
 }
 
-// custom hook: pages use this to read the context
+
 export function useQuiz(): QuizContextType {
   const context = useContext(QuizContext);
 

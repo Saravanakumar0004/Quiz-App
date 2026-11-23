@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-// 600 -> "10:00"
+
 export function formatTime(totalSeconds: number): string {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
@@ -10,10 +10,9 @@ export function formatTime(totalSeconds: number): string {
 function useTimer(startSeconds: number, onEnd: () => void, running: boolean) {
   const [timeLeft, setTimeLeft] = useState<number>(startSeconds);
 
-  // count down 1 second at a time while the quiz is running
   useEffect(() => {
     if (!running) {
-      setTimeLeft(startSeconds); // reset when not running
+      setTimeLeft(startSeconds); 
       return;
     }
 
@@ -21,10 +20,10 @@ function useTimer(startSeconds: number, onEnd: () => void, running: boolean) {
       setTimeLeft((previous) => previous - 1);
     }, 1000);
 
-    return () => clearInterval(timer); // stop the timer
+    return () => clearInterval(timer); 
   }, [running]);
 
-  // when time reaches 0, call onEnd (auto submit)
+ 
   useEffect(() => {
     if (running && timeLeft === 0) {
       onEnd();

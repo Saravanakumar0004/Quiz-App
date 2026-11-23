@@ -1,7 +1,7 @@
 import type { QuizSettings, Question } from "./types/quiz";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
+const API_URL: string =
+  import.meta.env.VITE_API_URL || "https://opentdb.com/api.php";
 
 interface ApiQuestion {
   question: string;
@@ -14,13 +14,11 @@ interface ApiResult {
   results: ApiQuestion[];
 }
 
-
 function decode(text: string): string {
   const box = document.createElement("textarea");
   box.innerHTML = text;
   return box.value;
 }
-
 
 function shuffle(items: string[]): string[] {
   const copy = [...items];
@@ -35,13 +33,29 @@ function shuffle(items: string[]): string[] {
   return copy;
 }
 
+function isRealFilter(value: unknown): boolean {
+  const text = String(value ?? "").trim().toLowerCase();
+  return text !== "" && text !== "any" && text !== "0" && text !== "undefined";
+}
+
 export async function getQuestions(settings: QuizSettings): Promise<Question[]> {
-  const url =
-    API_URL +
-    "?amount=" + settings.amount +
-    "&type=multiple" +
-    "&category=" + settings.category +
-    "&difficulty=" + settings.difficulty;
+  const params = new URLSearchParams({
+    amount: String(settings.amount),
+    type: "multiple",
+  });
+
+  if (isRealFilter(settings.category)) {
+    params.set("category", String(settings.category));
+  }
+  if (isRealFilter(settings.difficulty)) {
+    params.set("difficulty", String(settings.difficulty));
+  }
+
+  const url = `${API_URL}?${params.toString()}`;
+
+  if (import.meta.env.DEV) {
+    console.log("Quiz API request:", url);
+  }
 
   const res = await fetch(url);
 
@@ -54,11 +68,15 @@ export async function getQuestions(settings: QuizSettings): Promise<Question[]> 
 
   const data: ApiResult = await res.json();
 
+  if (import.meta.env.DEV) {
+    console.log("Quiz API response_code:", data.response_code);
+  }
+
   if (data.response_code === 5) {
     throw new Error("Too many requests. Wait 5 seconds and try again.");
   }
   if (data.response_code === 1) {
-    return []; 
+    return [];
   }
   if (data.response_code !== 0) {
     throw new Error("Could not load questions. Please try again.");

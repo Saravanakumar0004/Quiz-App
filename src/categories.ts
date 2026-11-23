@@ -10,8 +10,10 @@ export const categories: Category[] = [
   { id: "23", name: "History" },
 ];
 
-// "18" -> "Computers"
+
 export function getCategoryName(id: string): string {
+  if (id === "") return "Any Category";
+
   const found = categories.find((item) => item.id === id);
   return found ? found.name : "";
 }
