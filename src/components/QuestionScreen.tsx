@@ -1,7 +1,20 @@
-function QuestionScreen(props) {
+interface QuestionScreenProps {
+  current: number;
+  total: number;
+  time: string;
+  question: string;
+  options: string[];
+  selected: string | undefined;
+  correct: string;
+  onSelect: (option: string) => void;
+  onNext: () => void;
+  onPrev: () => void;
+}
+
+function QuestionScreen(props: QuestionScreenProps) {
   const percent = (props.current / props.total) * 100;
 
-  function getClass(option) {
+  function getClass(option: string): string {
     const base = "cursor-pointer rounded-xl p-4 ";
 
     if (!props.selected) {
