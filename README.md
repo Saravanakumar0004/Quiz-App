@@ -53,7 +53,7 @@ Then start the app:
 npm run dev
 ```
 
-Open http://localhost:5173 in your browser.
+Open https://quiz-app-one-delta-65.vercel.app/ in your browser.
 
 To check the types and create a production build:
 
