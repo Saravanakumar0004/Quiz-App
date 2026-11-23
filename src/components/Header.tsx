@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 
-
-function linkClass({ isActive }) {
+// active link is highlighted
+function linkClass({ isActive }: { isActive: boolean }): string {
   return isActive ? "font-bold text-orange-400" : "text-[#c9c6ee]";
 }
 

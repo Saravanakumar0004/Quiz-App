@@ -1,4 +1,11 @@
-function ResultScreen(props) {
+interface ResultScreenProps {
+  score: number;
+  total: number;
+  time: string;
+  onRestart: () => void;
+}
+
+function ResultScreen(props: ResultScreenProps) {
   const percent = Math.round((props.score / props.total) * 100);
   const wrong = props.total - props.score;
 
