@@ -7,7 +7,6 @@ A quiz app where you choose your settings, answer questions from the Open Trivia
 ## Screenshots
 
 
-|---|---|
 | ![Home on desktop](screenshots/home-desktop.png) |
 | ![Quiz on desktop](screenshots/quiz-desktop.png) | 
 
