@@ -2,7 +2,7 @@
 
 A quiz app where you choose your settings, answer questions from the Open Trivia DB API against a 10-minute timer, and see your past results.
 
-🔗 **Live link:** [paste your Vercel link here]
+🔗 **Live link:**https://quiz-app-one-delta-65.vercel.app/
 
 ## Screenshots
 
@@ -53,7 +53,7 @@ Then start the app:
 npm run dev
 ```
 
-Open https://quiz-app-one-delta-65.vercel.app/ in your browser.
+Open http://localhost:5173 in your browser.
 
 To check the types and create a production build:
 
